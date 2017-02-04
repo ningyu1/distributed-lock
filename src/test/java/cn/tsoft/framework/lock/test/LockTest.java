@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import cn.tsoft.framework.lock.DefaultLockCallBack;
 import cn.tsoft.framework.lock.Lock;
 import cn.tsoft.framework.lock.LockCallBack;
 import cn.tsoft.framework.lock.LockCantObtainException;
@@ -34,20 +35,21 @@ import cn.tsoft.framework.test.BaseJunitTestWithContext;
  */
 public class LockTest extends BaseJunitTestWithContext {
 	
-	private final Logger logger = LoggerFactory.getLogger(LockTest.class);
+private final Logger logger = LoggerFactory.getLogger(LockTest.class);
 	
 	@Autowired
     Lock lock;
     boolean obtain = false;
     
     @Test
-    public void testLockNormal() throws InterruptedException {
+    public void testLockNormal1() throws InterruptedException {
         ExecutorService pool=Executors.newFixedThreadPool(10);
         
         Runnable s = new Runnable() {
             @Override
             public void run() {
-                String returnValue=lock("Test_key_2",LockRetryFrequncy.VERY_QUICK,10,20,100);
+                String returnValue=lock1("Test_key_2",LockRetryFrequncy.VERY_QUICK,30,20,1000);
+                logger.info("lock result:{}", returnValue);
             }
         };
         
@@ -58,18 +60,64 @@ public class LockTest extends BaseJunitTestWithContext {
         pool.awaitTermination(1000l, TimeUnit.DAYS);
         
     }
+    @Test
+    public void testLockNormal2() throws InterruptedException {
+    	ExecutorService pool=Executors.newFixedThreadPool(10);
+    	
+    	Runnable s = new Runnable() {
+    		@Override
+    		public void run() {
+    			String returnValue=lock2("Test_key_2",LockRetryFrequncy.VERY_QUICK,1,20,1000);
+    			logger.info("lock result:{}", returnValue);
+    		}
+    	};
+    	
+    	for (int i = 0; i < 10; i++) {
+    		pool.execute(s);
+    	}
+    	pool.shutdown();
+    	pool.awaitTermination(1000l, TimeUnit.DAYS);
+    	
+    }
     
-    private String lock(String key, LockRetryFrequncy frequncy, int timeoutInSecond, long redisKeyExpireSeconds,final long hold) {
-        return lock.lock(key, frequncy, timeoutInSecond, redisKeyExpireSeconds, new LockCallBack<String>() {
-            @Override
-            public String handleException(LockInsideExecutedException e) throws LockInsideExecutedException {
-                throw new LockInsideExecutedException(e);
-            }
+    private String lock1(final String key, LockRetryFrequncy frequncy, int timeoutInSecond, long redisKeyExpireSeconds,final long hold) {
+      
+    	return lock.lock(key, frequncy, timeoutInSecond, redisKeyExpireSeconds, new LockCallBack<String>() {
+          @Override
+          public String handleException(LockInsideExecutedException e) throws LockInsideExecutedException {
+//              throw new LockInsideExecutedException(e);
+              logger.error("获取到锁，内部执行报错");
+              return "Exception";
+              
+          }
 
-            @Override
-            public String handleNotObtainLock() throws LockCantObtainException {
-                throw new LockCantObtainException();
-            }
+          @Override
+          public String handleNotObtainLock() throws LockCantObtainException {
+        	  logger.error("没有获取到锁");
+//              throw new LockCantObtainException();
+        	  return "NotObtainLock";
+          }
+
+          @Override
+          public String handleObtainLock() {
+              Assert.assertFalse(obtain);
+              obtain=true;
+              try {
+                  Thread.sleep(hold);
+              } catch (InterruptedException e) {
+                  e.printStackTrace();
+              }
+              logger.info("获取到锁，obtain the key");
+              obtain=false;
+              return "ok";
+          }
+      });
+      
+  }
+    
+    private String lock2(final String key, LockRetryFrequncy frequncy, int timeoutInSecond, long redisKeyExpireSeconds,final long hold) {
+        
+        return lock.lock(key, frequncy, timeoutInSecond, redisKeyExpireSeconds, new DefaultLockCallBack<String>("NotObtainLock", "Exception") {
 
             @Override
             public String handleObtainLock() {
@@ -80,7 +128,7 @@ public class LockTest extends BaseJunitTestWithContext {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                logger.debug("obtain the key");
+                logger.info("obtain the key:{}", key);
                 obtain=false;
                 return "ok";
             }

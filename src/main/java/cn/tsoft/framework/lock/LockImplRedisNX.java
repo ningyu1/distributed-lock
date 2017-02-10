@@ -42,8 +42,8 @@ public class LockImplRedisNX implements Lock {
 	}
 
 	@Override
-	public <T> T lock(String lockForDoTask, int timeoutInSecond, long redisKeyExpireSeconds, LockCallBack<T> lockCallBack)	throws LockInsideExecutedException, LockCantObtainException {
-		return lock(lockForDoTask,LockRetryFrequncy.NORMAL,timeoutInSecond, redisKeyExpireSeconds,lockCallBack);
+	public <T> T lock(String lockForDoTask, int timeoutInSecond, long redisKeyExpireSeconds, LockCallback<T> lockCallBack)	throws LockInsideExecutedException, LockCantObtainException {
+		return lock(lockForDoTask,LockRetryFrequency.NORMAL,timeoutInSecond, redisKeyExpireSeconds,lockCallBack);
 	}
 
 
@@ -52,7 +52,7 @@ public class LockImplRedisNX implements Lock {
      * @see com.saic.ebiz.scoreapp.common.util.lock.Lock#lock(java.lang.String, int, long, com.saic.ebiz.scoreapp.common.util.lock.LockCallBack)
      */
     @Override
-    public <T> T lock(String key, LockRetryFrequncy frequncy, int timeoutInSecond,long redisKeyExpireSeconds, LockCallBack<T> lockCallBack) throws LockInsideExecutedException,LockCantObtainException{
+    public <T> T lock(String key, LockRetryFrequency frequncy, int timeoutInSecond,long redisKeyExpireSeconds, LockCallback<T> lockCallBack) throws LockInsideExecutedException,LockCantObtainException{
         String lockKey=generateKey(key);
         long curentTime = System.currentTimeMillis();
         long expireSecond = curentTime / 1000 + redisKeyExpireSeconds;

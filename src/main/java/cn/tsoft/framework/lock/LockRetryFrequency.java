@@ -16,7 +16,7 @@ package cn.tsoft.framework.lock;
  * @author ningyu
  *
  */
-public enum LockRetryFrequncy {
+public enum LockRetryFrequency {
 	
 	VERY_QUICK(10),
 	QUICK(50),
@@ -30,7 +30,7 @@ public enum LockRetryFrequncy {
 	 * 
 	 * @param rf 重试间隔 ， 毫秒
 	 */
-	private LockRetryFrequncy(int rf){
+	private LockRetryFrequency(int rf){
 		retrySpan=rf;
 	}
 

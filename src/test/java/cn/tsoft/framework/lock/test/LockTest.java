@@ -20,12 +20,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import cn.tsoft.framework.lock.DefaultLockCallBack;
+import cn.tsoft.framework.lock.DefaultLockCallback;
 import cn.tsoft.framework.lock.Lock;
-import cn.tsoft.framework.lock.LockCallBack;
+import cn.tsoft.framework.lock.LockCallback;
 import cn.tsoft.framework.lock.LockCantObtainException;
 import cn.tsoft.framework.lock.LockInsideExecutedException;
-import cn.tsoft.framework.lock.LockRetryFrequncy;
+import cn.tsoft.framework.lock.LockRetryFrequency;
 import cn.tsoft.framework.test.BaseJunitTestWithContext;
 
 /**
@@ -48,7 +48,7 @@ private final Logger logger = LoggerFactory.getLogger(LockTest.class);
         Runnable s = new Runnable() {
             @Override
             public void run() {
-                String returnValue=lock1("Test_key_2",LockRetryFrequncy.VERY_QUICK,30,20,1000);
+                String returnValue=lock1("Test_key_2",LockRetryFrequency.VERY_QUICK,30,20,1000);
                 logger.info("lock result:{}", returnValue);
             }
         };
@@ -67,7 +67,7 @@ private final Logger logger = LoggerFactory.getLogger(LockTest.class);
     	Runnable s = new Runnable() {
     		@Override
     		public void run() {
-    			String returnValue=lock2("Test_key_2",LockRetryFrequncy.VERY_QUICK,1,20,1000);
+    			String returnValue=lock2("Test_key_2",LockRetryFrequency.VERY_QUICK,1,20,1000);
     			logger.info("lock result:{}", returnValue);
     		}
     	};
@@ -80,9 +80,9 @@ private final Logger logger = LoggerFactory.getLogger(LockTest.class);
     	
     }
     
-    private String lock1(final String key, LockRetryFrequncy frequncy, int timeoutInSecond, long redisKeyExpireSeconds,final long hold) {
+    private String lock1(final String key, LockRetryFrequency frequncy, int timeoutInSecond, long redisKeyExpireSeconds,final long hold) {
       
-    	return lock.lock(key, frequncy, timeoutInSecond, redisKeyExpireSeconds, new LockCallBack<String>() {
+    	return lock.lock(key, frequncy, timeoutInSecond, redisKeyExpireSeconds, new LockCallback<String>() {
           @Override
           public String handleException(LockInsideExecutedException e) throws LockInsideExecutedException {
 //              throw new LockInsideExecutedException(e);
@@ -115,9 +115,9 @@ private final Logger logger = LoggerFactory.getLogger(LockTest.class);
       
   }
     
-    private String lock2(final String key, LockRetryFrequncy frequncy, int timeoutInSecond, long redisKeyExpireSeconds,final long hold) {
+    private String lock2(final String key, LockRetryFrequency frequncy, int timeoutInSecond, long redisKeyExpireSeconds,final long hold) {
         
-        return lock.lock(key, frequncy, timeoutInSecond, redisKeyExpireSeconds, new DefaultLockCallBack<String>("NotObtainLock", "Exception") {
+        return lock.lock(key, frequncy, timeoutInSecond, redisKeyExpireSeconds, new DefaultLockCallback<String>("NotObtainLock", "Exception") {
 
             @Override
             public String handleObtainLock() {

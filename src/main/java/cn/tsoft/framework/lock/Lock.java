@@ -35,7 +35,7 @@ public interface Lock {
      * @see [相关类/方法](可选)
      * @since [产品/模块版本](可选)
      */
-    public abstract <T> T lock(String key, int timeoutInSecond, long redisKeyExpireSeconds, LockCallBack<T> lockCallBack) throws LockInsideExecutedException,  LockCantObtainException;
+    public abstract <T> T lock(String key, int timeoutInSecond, long redisKeyExpireSeconds, LockCallback<T> lockCallBack) throws LockInsideExecutedException,  LockCantObtainException;
 
     /**
      * 
@@ -53,6 +53,6 @@ public interface Lock {
      * @see [相关类/方法](可选)
      * @since [产品/模块版本](可选)
      */
-    public abstract <T> T lock(String key, LockRetryFrequncy frequncy, int timeoutInSecond, long redisKeyExpireSeconds, LockCallBack<T> lockCallBack)	throws LockInsideExecutedException, LockCantObtainException;
+    public abstract <T> T lock(String key, LockRetryFrequency frequncy, int timeoutInSecond, long redisKeyExpireSeconds, LockCallback<T> lockCallBack)	throws LockInsideExecutedException, LockCantObtainException;
 
 }

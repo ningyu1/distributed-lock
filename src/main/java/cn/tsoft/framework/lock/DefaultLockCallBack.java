@@ -21,8 +21,8 @@ import org.slf4j.LoggerFactory;
  * @see [相关类/方法]（可选）
  * @since [产品/模块版本] （可选）
  */
-public abstract class DefaultLockCallBack<T> implements LockCallBack<T>{
-    private final Logger logger = LoggerFactory.getLogger(DefaultLockCallBack.class);
+public abstract class DefaultLockCallback<T> implements LockCallback<T>{
+    private final Logger logger = LoggerFactory.getLogger(DefaultLockCallback.class);
     private T returnValueForhandleNotObtainLock;
     private T returnValueForhandleException;
     
@@ -31,7 +31,7 @@ public abstract class DefaultLockCallBack<T> implements LockCallBack<T>{
      * @param returnValueForhandleNotObtainLock 没有获取到锁时，返回值
      * @param returnValueForhandleException     获取到锁后内部执行报错时，返回值
      */
-    public DefaultLockCallBack(T returnValueForhandleNotObtainLock, T returnValueForhandleException) {
+    public DefaultLockCallback(T returnValueForhandleNotObtainLock, T returnValueForhandleException) {
         super();
         this.returnValueForhandleNotObtainLock = returnValueForhandleNotObtainLock;
         this.returnValueForhandleException = returnValueForhandleException;

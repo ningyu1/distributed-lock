@@ -26,15 +26,12 @@ public class LockInsideExecutedException extends RuntimeException{
 
     public LockInsideExecutedException() {
         super();
-        // TODO Auto-generated constructor stub
     }
     public LockInsideExecutedException(String message, Throwable cause) {
         super(message, cause);
-        // TODO Auto-generated constructor stub
     }
     public LockInsideExecutedException(Throwable cause) {
         super(cause);
-        // TODO Auto-generated constructor stub
     }
 
     

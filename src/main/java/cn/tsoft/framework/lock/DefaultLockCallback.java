@@ -37,18 +37,12 @@ public abstract class DefaultLockCallback<T> implements LockCallback<T>{
         this.returnValueForhandleException = returnValueForhandleException;
     }
 
-    /* (non-Javadoc)
-     * @see com.saic.ebiz.mms.common.util.lock.LockCallBack#handleNotObtainLock()
-     */
     @Override
     public T handleNotObtainLock()  {
         logger.error("LockCantObtainException");
         return returnValueForhandleNotObtainLock;
     }
 
-    /* (non-Javadoc)
-     * @see com.saic.ebiz.mms.common.util.lock.LockCallBack#handleException(com.saic.ebiz.mms.common.util.lock.LockInsideExecutedException)
-     */
     @Override
     public T handleException(LockInsideExecutedException e)  {
         logger.error("LockInsideExecutedException", e);

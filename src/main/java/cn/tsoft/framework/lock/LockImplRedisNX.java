@@ -46,11 +46,6 @@ public class LockImplRedisNX implements Lock {
 		return lock(lockForDoTask,LockRetryFrequency.NORMAL,timeoutInSecond, redisKeyExpireSeconds,lockCallBack);
 	}
 
-
-
-    /* (non-Javadoc)
-     * @see com.saic.ebiz.scoreapp.common.util.lock.Lock#lock(java.lang.String, int, long, com.saic.ebiz.scoreapp.common.util.lock.LockCallBack)
-     */
     @Override
     public <T> T lock(String key, LockRetryFrequency frequncy, int timeoutInSecond,long redisKeyExpireSeconds, LockCallback<T> lockCallBack) throws LockInsideExecutedException,LockCantObtainException{
         String lockKey=generateKey(key);

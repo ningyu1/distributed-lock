@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 
 
 
-import cn.tsoft.framework.redis.client.RedisClient;
+import cn.tsoft.framework.redis.client.IRedisClient;
 
 
 
@@ -31,15 +31,17 @@ public class LockImplRedisNX implements Lock {
     private static final Logger LOGGER = LoggerFactory.getLogger(LockImplRedisNX.class);
 //    private static final long threadSleepMilliseconds=100;
     
-    private RedisClient redisClient;
+    private static final String LOCK_NAMESPACE = "LOCK";
+    
+    private IRedisClient redisClient;
 
-	public RedisClient getRedisClient() {
-		return redisClient;
-	}
+    public IRedisClient getRedisClient() {
+        return redisClient;
+    }
 
-	public void setRedisClient(RedisClient redisClient) {
-		this.redisClient = redisClient;
-	}
+    public void setRedisClient(IRedisClient redisClient) {
+        this.redisClient = redisClient;
+    }
 
 	@Override
 	public <T> T lock(String lockForDoTask, int timeoutInSecond, long redisKeyExpireSeconds, LockCallback<T> lockCallBack)	throws LockInsideExecutedException, LockCantObtainException {
@@ -56,17 +58,17 @@ public class LockImplRedisNX implements Lock {
         int retryCount= Float.valueOf(timeoutInSecond*1000/frequncy.getRetrySpan()).intValue();
         
         for (int i = 0; i < retryCount; i++) {
-            if (redisClient.setnx(lockKey, String.valueOf(expireMillisSecond)) == 1) {
+        	if (redisClient.setnx(key, LOCK_NAMESPACE, String.valueOf(expireMillisSecond)) == 1) {
                 LOGGER.debug("obtain the lock: {},  at {} retry",lockKey,i);
                 try {
-                    redisClient.expireAt(lockKey, expireSecond);
+                	redisClient.expireAt(key, LOCK_NAMESPACE, expireSecond);
                     return lockCallBack.handleObtainLock();
                 } catch (Exception e) {
                     LockInsideExecutedException ie=new LockInsideExecutedException(e);
                     return lockCallBack.handleException(ie);
                 } finally {
                     // logger.info("释放锁{}",key2);
-                    redisClient.del(lockKey);
+                	redisClient.del(key, LOCK_NAMESPACE);
 //                    redisClient.remove(lockForDoTask);
                 }
             } else {
@@ -79,13 +81,13 @@ public class LockImplRedisNX implements Lock {
             }
         }
         
-        String expireSpecifiedInString = redisClient.get(lockKey);
+        String expireSpecifiedInString = redisClient.get(key, LOCK_NAMESPACE, null);
         if (expireSpecifiedInString != null) {
             long expireSpecified = Long.valueOf(expireSpecifiedInString);
             if (curentTime > expireSpecified) {
                 LOGGER.warn("detect the task lock is expired, key: {}, expireSpecified:{}, currentTime:{}",
                         lockKey, expireSpecified, curentTime);
-                redisClient.del(lockKey);
+                redisClient.del(key, LOCK_NAMESPACE);
             }
         }
         T r =lockCallBack.handleNotObtainLock();

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Tsoft and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, Jiuye SCM and/or its affiliates. All rights reserved.
  * FileName: LockInsideExecutedException.java
  * Author:   ningyu
  * Date:     2017年1月11日
@@ -11,28 +11,29 @@
 package cn.tsoft.framework.lock;
 
 /**
- * 〈一句话功能简述〉<br> 
+ * 〈一句话功能简述〉<br>
  * 〈功能详细描述〉
- *
+ * 
  * @author ningyu
  * @see [相关类/方法]（可选）
  * @since [产品/模块版本] （可选）
  */
-public class LockInsideExecutedException extends RuntimeException{
+public class LockInsideExecutedException extends RuntimeException {
 
     /**
-     */
-    private static final long serialVersionUID = 1L;
+	 */
+    private static final long serialVersionUID = 2331579241110939344L;
 
     public LockInsideExecutedException() {
         super();
     }
+
     public LockInsideExecutedException(String message, Throwable cause) {
         super(message, cause);
     }
+
     public LockInsideExecutedException(Throwable cause) {
         super(cause);
     }
 
-    
 }

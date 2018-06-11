@@ -8,7 +8,7 @@
  * <author>      <time>      <version>    <desc>
  * 修改人姓名             修改时间            版本号                  描述
  */
-package cn.tsoft.framework.lock;
+package io.github.ningyu.lock;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

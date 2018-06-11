@@ -1,29 +1,27 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>cn.tsoft.framework</groupId>
-		<artifactId>tsoft-parent</artifactId>
-		<version>1.0.5</version>
-	</parent>
+	<groupId>io.github.ningyu</groupId>
 	<artifactId>distributed-lock</artifactId>
-	<version>1.2.0-SNAPSHOT</version>
+	<version>1.2.1-SNAPSHOT</version>
 	
 	<dependencies>
 		<!-- slf4j -->
 		<dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
+            <version>1.7.5</version>
         </dependency>
         <!-- commons-lang3 -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
+			<version>3.4</version>
 		</dependency>
 		<dependency>
-			<groupId>cn.tsoft.framework</groupId>
+			<groupId>io.github.ningyu</groupId>
 			<artifactId>redis-client</artifactId>
-			<version>1.2.0-SNAPSHOT</version>
+			<version>1.2.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.testng</groupId>
@@ -35,6 +33,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
+			<version>4.0.0.RELEASE</version>
 			<scope>test</scope>
 			<optional>true</optional>
 		</dependency>
@@ -42,6 +41,7 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
+            <version>1.0.13</version>
         </dependency>
 	</dependencies>
 	

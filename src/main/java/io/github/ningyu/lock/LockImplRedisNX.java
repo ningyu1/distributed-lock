@@ -8,12 +8,12 @@
  * <author>      <time>      <version>    <desc>
  * 修改人姓名             修改时间            版本号                  描述
  */
-package cn.tsoft.framework.lock;
+package io.github.ningyu.lock;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cn.tsoft.framework.redis.client.IRedisClient;
+import io.github.ningyu.redis.client.IRedisClient;
 
 /**
  * 〈一句话功能简述〉分布式并发悲观锁<br>

@@ -8,7 +8,15 @@
  * <author>      <time>      <version>    <desc>
  * 修改人姓名             修改时间            版本号                  描述
  */
-package cn.tsoft.framework.lock.test;
+package io.github.ningyu.lock.test;
+
+import io.github.ningyu.lock.DefaultLockCallback;
+import io.github.ningyu.lock.Lock;
+import io.github.ningyu.lock.LockCallback;
+import io.github.ningyu.lock.LockCantObtainException;
+import io.github.ningyu.lock.LockInsideExecutedException;
+import io.github.ningyu.lock.LockRetryFrequency;
+import io.github.ningyu.test.BaseJunitTestWithContext;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -19,14 +27,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
-import cn.tsoft.framework.lock.DefaultLockCallback;
-import cn.tsoft.framework.lock.Lock;
-import cn.tsoft.framework.lock.LockCallback;
-import cn.tsoft.framework.lock.LockCantObtainException;
-import cn.tsoft.framework.lock.LockInsideExecutedException;
-import cn.tsoft.framework.lock.LockRetryFrequency;
-import cn.tsoft.framework.test.BaseJunitTestWithContext;
 
 /**
  * <功能描述>
